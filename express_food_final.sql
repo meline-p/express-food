@@ -129,7 +129,7 @@ INSERT INTO addresses (id, address_number, address_route, address_zip_code, addr
 (3, '3', 'Avenue du Square', '13100', 'Aix-en-Provence', 3),
 (4, '312', 'Impasse des Fleurs', '69000', 'Lyon', 4),
 (5, '87', 'Rue Diderot', '31000', 'Toulouse', 4),
-(6, '62', 'Boulebard Giraud', '63000', 'Clermont-Ferrand', 5);
+(6, '62', 'Boulevard Giraud', '63000', 'Clermont-Ferrand', 5);
 
 -- ORDERS
 INSERT INTO orders (order_date, customer_id, address_id)
