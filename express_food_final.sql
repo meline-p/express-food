@@ -10,6 +10,23 @@ DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS addresses;
 DROP TABLE IF EXISTS customers;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS roles;
+
+CREATE TABLE roles (
+  id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  name varchar(255) NOT NULL
+);
+
+CREATE TABLE users (
+  id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  role_id int(11) DEFAULT 1,
+  last_name varchar(255) NOT NULL,
+  first_name varchar(255) NOT NULL,
+  email varchar(255) NOT NULL,
+  password varchar(255) NOT NULL,
+  FOREIGN KEY (role_id) REFERENCES roles(id)
+);
 
 CREATE TABLE customers (
   id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -113,6 +130,25 @@ CREATE TABLE invoices (
   expedition_id int(11) NOT NULL,
   FOREIGN KEY (expedition_id) REFERENCES expeditions(id)
 );
+
+-- ROLES
+SET @role_1= NULL;
+INSERT INTO roles (name)
+VALUES ('Admin');
+SET @role_1 = LAST_INSERT_ID();
+
+--
+
+SET @role_2= NULL;
+INSERT INTO roles (name)
+VALUES ('Editeur');
+SET @role_2 = LAST_INSERT_ID();
+
+-- USERS
+INSERT INTO users (role_id, last_name, first_name, email, password) VALUES
+(@role_1, "RUTH", "Estelle", "e.ruth@expressfood.fr", SHA2('loszihof755456', 256)),
+(@role_2, "HUFFLE", "Milo", "m.huffle@expressfood.fr", SHA2('qidh6558ihsdd', 256)),
+(@role_2, "THOMAS", "Samuel", "s.thomas@expressfood.fr", SHA2('hfihf08753jbsf', 256));
 
 -- CUSTOMERS
 INSERT INTO customers (id, last_name, first_name, email, password, phone_number) VALUES
