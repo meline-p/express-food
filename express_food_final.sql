@@ -196,7 +196,6 @@ UPDATE orders
 SET order_number = CONCAT(DATE_FORMAT(order_date, '%Y%m%d%H%i%s'), @order_6 )
 WHERE id = @order_6;
 
-
 -- CATEGORIES
 INSERT INTO categories (name) VALUES ('plat'),('dessert');
 
@@ -217,29 +216,50 @@ INSERT INTO products (name, description, unit_price, category_id) VALUES
 
 
 -- MENUS
-INSERT INTO menus (date) VALUES (CURRENT_DATE);
-INSERT INTO menus (date) VALUES (CURRENT_DATE + INTERVAL 1 DAY);
-INSERT INTO menus (date) VALUES (CURRENT_DATE + INTERVAL 2 DAY);
-INSERT INTO menus (date) VALUES (CURRENT_DATE + INTERVAL 3 DAY);
+SET @menu_1= NULL;
+INSERT INTO menus (date)
+VALUES (CURRENT_DATE);
+SET @menu_1 = LAST_INSERT_ID();
+
+--
+
+SET @menu_2= NULL;
+INSERT INTO menus (date)
+VALUES (CURRENT_DATE + INTERVAL 1 DAY);
+SET @menu_2 = LAST_INSERT_ID();
+
+-- 
+
+SET @menu_3= NULL;
+INSERT INTO menus (date)
+VALUES (CURRENT_DATE + INTERVAL 2 DAY);
+SET @menu_3 = LAST_INSERT_ID();
+
+--
+
+SET @menu_4= NULL;
+INSERT INTO menus (date)
+VALUES (CURRENT_DATE + INTERVAL 3 DAY);
+SET @menu_4 = LAST_INSERT_ID();
 
 -- MENUS PRODUCTS
 INSERT INTO menus_products (menu_id, product_id) VALUES 
-(1, 1),
-(1, 2),
-(1, 3),
-(1, 4),
-(2, 6),
-(2, 7),
-(2, 5),
-(2, 8),
-(3, 9),
-(3, 10),
-(3, 11),
-(3, 12),
-(4, 1),
-(4, 6),
-(4, 12),
-(4, 2);
+(@menu_1, 1),
+(@menu_1, 2),
+(@menu_1, 3),
+(@menu_1, 4),
+(@menu_2, 6),
+(@menu_2, 7),
+(@menu_2, 5),
+(@menu_2, 8),
+(@menu_2, 9),
+(@menu_3, 10),
+(@menu_3, 11),
+(@menu_3, 12),
+(@menu_4, 1),
+(@menu_4, 6),
+(@menu_4, 12),
+(@menu_4, 2);
 
 -- ORDER LINES
 INSERT INTO order_lines (order_id, product_id, quantity) VALUES 
@@ -273,15 +293,14 @@ INSERT INTO delivery_people (last_name, first_name, email, password, phone_numbe
 
 -- EXPEDITIONS
 INSERT INTO expeditions (order_id, delivery_status_id, shipping_date, delivery_date, delivery_people_id) VALUES 
-(1, 3, NOW() + INTERVAL 2 MINUTE, NOW() + INTERVAL 10 MINUTE, 1),
-(2, 2, NOW() + INTERVAL 6 MINUTE, NULL, 2),
-(3, 1, NULL, NULL, NULL),
-(4, 3, NOW() + INTERVAL 7 MINUTE, NOW() + INTERVAL 12 MINUTE, 8),
-(5, 3, NOW() + INTERVAL 20 MINUTE, NOW() + INTERVAL 28 MINUTE, 5),
-(6, 3, NOW() + INTERVAL 35 MINUTE, NOW() + INTERVAL 50 MINUTE, 6);
+(@order_1, 3, NOW() + INTERVAL 2 MINUTE, NOW() + INTERVAL 10 MINUTE, 1),
+(@order_2, 2, NOW() + INTERVAL 6 MINUTE, NULL, 2),
+(@order_3, 1, NULL, NULL, NULL),
+(@order_4, 3, NOW() + INTERVAL 7 MINUTE, NOW() + INTERVAL 12 MINUTE, 8),
+(@order_5, 3, NOW() + INTERVAL 20 MINUTE, NOW() + INTERVAL 28 MINUTE, 5),
+(@order_6, 3, NOW() + INTERVAL 35 MINUTE, NOW() + INTERVAL 50 MINUTE, 6);
 
 -- INVOICES
-
 INSERT INTO invoices (expedition_id)
 VALUES (1);
 
@@ -315,6 +334,7 @@ UPDATE invoices i
 JOIN expeditions e ON i.expedition_id = e.id
 SET i.invoice_number = CONCAT(@invoice_3, 'F', DATE_FORMAT(e.delivery_date, '%Y%m%d'), e.order_id)
 WHERE i.id = @invoice_3;
+
 --
 
 INSERT INTO invoices (expedition_id)
