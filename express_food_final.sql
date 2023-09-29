@@ -20,7 +20,7 @@ CREATE TABLE roles (
 
 CREATE TABLE users (
   id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  role_id int(11) DEFAULT 1,
+  role_id int(11) DEFAULT 1 NOT NULL,
   last_name varchar(255) NOT NULL,
   first_name varchar(255) NOT NULL,
   email varchar(255) NOT NULL,
@@ -90,6 +90,7 @@ CREATE TABLE order_lines (
   order_id int(11) NOT NULL,
   product_id int(11) NOT NULL,
   quantity int(11) NOT NULL,
+  unit_price float NOT NULL,
   FOREIGN KEY (product_id) REFERENCES products(id),
   FOREIGN KEY (order_id) REFERENCES orders(id),
   PRIMARY KEY (product_id, order_id)
@@ -298,17 +299,17 @@ INSERT INTO menus_products (menu_id, product_id) VALUES
 (@menu_4, 2);
 
 -- ORDER LINES
-INSERT INTO order_lines (order_id, product_id, quantity) VALUES 
-(@order_1, 3, 2),
-(@order_1, 1, 1),
-(@order_2, 2, 3),
-(@order_3, 1, 2),
-(@order_4, 3, 1),
-(@order_4, 4, 1),
-(@order_5, 4, 3),
-(@order_6, 1, 6),
-(@order_6, 2, 2),
-(@order_6, 4, 4);
+INSERT INTO order_lines (order_id, product_id, quantity, unit_price) VALUES 
+(@order_1, 3, 2, 7.50),
+(@order_1, 1, 1, 9.10),
+(@order_2, 2, 3, 3.10),
+(@order_3, 1, 2, 9.10),
+(@order_4, 3, 1, 7.50),
+(@order_4, 4, 1, 2.90),
+(@order_5, 4, 3, 2.90),
+(@order_6, 1, 6, 9.10),
+(@order_6, 2, 2, 3.10),
+(@order_6, 4, 4, 2.90);
 
 -- DELIVERY STATUS
 INSERT INTO delivery_status (name) VALUES 
